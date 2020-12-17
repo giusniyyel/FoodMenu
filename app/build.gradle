@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 17/12/20 04:25 PM
+ * Last modified 17/12/20 04:36 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,14 +18,13 @@
 
 plugins {
     id 'com.android.application'
+    id 'com.google.gms.google-services'
 }
 
 android {
     compileSdkVersion 29
 
-    viewBinding {
-        enabled = true
-    }
+    android.buildFeatures.viewBinding true
 
     defaultConfig {
         applicationId "com.giusniyyel.foodmenu"
@@ -54,6 +53,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.firebase:firebase-database:19.3.0'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

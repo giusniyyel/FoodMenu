@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 17/12/20 04:13 PM
+ * Last modified 17/12/20 04:29 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.1"
+        classpath 'com.google.gms:google-services:4.3.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
