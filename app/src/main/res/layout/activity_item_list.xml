@@ -1,6 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Created by Daniel Campos on 17/12/20 03:01 PM
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Daniel Campos on 17/12/20 04:10 PM
   ~ Copyright (C) 2020 GiusNiyyel Inc.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   ~
-  ~ Last modified 17/12/20 02:53 PM
+  ~ Last modified 17/12/20 04:03 PM
   -->
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,7 +45,48 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/item_list" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:focusableInTouchMode="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/common_padding">
+
+                <EditText
+                    android:id="@+id/etName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="70"
+                    android:hint="@string/item_list_product_name_hint"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:nextFocusForward="@id/etPrice"/>
+
+                <EditText
+                    android:id="@+id/etPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:hint="@string/item_list_product_price_hint"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnSave"
+                    android:minWidth="88dp"
+                    android:text="@string/item_list_add_product_button" />
+
+            </LinearLayout>
+
+            <include layout="@layout/item_list" />
+        </LinearLayout>
     </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
