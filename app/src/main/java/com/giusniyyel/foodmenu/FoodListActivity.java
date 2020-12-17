@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 17/12/20 04:13 PM
+ * Last modified 17/12/20 04:22 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.giusniyyel.foodmenu.databinding.ActivityFoodListBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -54,11 +55,13 @@ public class FoodListActivity extends AppCompatActivity {
      * device.
      */
     private boolean mTwoPane;
+    private ActivityFoodListBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
+        mBinding = ActivityFoodListBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,6 +86,13 @@ public class FoodListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+    }
+
+    public void OnViewClicked(){
+        mBinding.btnSave.setOnClickListener(view -> {
+            DummyContent.Food Food = new DummyContent.Food(mBinding.etName.getText().toString().trim(),
+                    mBinding.etPrice.getText().toString().trim());
+        });
     }
 
     public static class SimpleItemRecyclerViewAdapter
@@ -124,7 +134,7 @@ public class FoodListActivity extends AppCompatActivity {
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_list_content, parent, false);
+                    .inflate(R.layout.food_list_content, parent, false);
             return new ViewHolder(view);
         }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Created by Daniel Campos
-  ~ Last modified 17/12/20 04:13 PM
+  ~ Last modified 17/12/20 04:17 PM
   ~ Copyright (C) 2020 GiusNiyyel Inc.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,4 +28,4 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".FoodListActivity"
-    tools:listitem="@layout/item_list_content" />
+    tools:listitem="@layout/food_list_content" />

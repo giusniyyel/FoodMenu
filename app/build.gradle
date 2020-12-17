@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 17/12/20 04:13 PM
+ * Last modified 17/12/20 04:15 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,6 +22,10 @@ plugins {
 
 android {
     compileSdkVersion 29
+
+    viewBinding {
+        enabled = true
+    }
 
     defaultConfig {
         applicationId "com.giusniyyel.foodmenu"

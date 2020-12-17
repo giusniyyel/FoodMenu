@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
   ~ Created by Daniel Campos
-  ~ Last modified 17/12/20 04:13 PM
+  ~ Last modified 17/12/20 04:17 PM
   ~ Copyright (C) 2020 GiusNiyyel Inc.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,7 +84,7 @@
 
             </LinearLayout>
 
-            <include layout="@layout/item_list" />
+            <include layout="@layout/food_list" />
         </LinearLayout>
     </FrameLayout>
 
