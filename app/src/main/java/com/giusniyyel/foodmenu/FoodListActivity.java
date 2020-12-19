@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 17/12/20 05:27 PM
+ * Last modified 19/12/20 05:51 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -37,6 +38,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.giusniyyel.foodmenu.dummy.DummyContent;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -50,18 +56,25 @@ import java.util.List;
  */
 public class FoodListActivity extends AppCompatActivity {
 
+    private static final String PATH_FOOD = "food";
+
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private boolean mTwoPane;
+    /**
+     * This is a View Binding variable
+     */
     private ActivityFoodListBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = ActivityFoodListBinding.inflate(getLayoutInflater());
+        mBinding = ActivityFoodListBinding.inflate(getLayoutInflater()); // This initiate the
         setContentView(mBinding.getRoot());
+
+        onViewClicked();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,12 +99,56 @@ public class FoodListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference(PATH_FOOD);
+
+        // To receive the data saved
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                DummyContent.Food food = snapshot.getValue(DummyContent.Food.class);
+                food.setId(snapshot.getKey());
+
+                if (!DummyContent.ITEMS.contains(food)) {
+                    DummyContent.addItem(food);
+                }
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
-    public void OnViewClicked(){
-        mBinding.btnSave.setOnClickListener(view -> {
-            DummyContent.Food Food = new DummyContent.Food(mBinding.etName.getText().toString().trim(),
+    //This sets the buttons actions
+    public void onViewClicked(){
+        mBinding.btnSave.setOnClickListener(View -> {
+            DummyContent.Food food = new DummyContent.Food(mBinding.etName.getText().toString().trim(),
                     mBinding.etPrice.getText().toString().trim());
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference(PATH_FOOD);
+            reference.push().setValue(food);
+            mBinding.etName.setText("");
+            mBinding.etPrice.setText("");
         });
     }
 
