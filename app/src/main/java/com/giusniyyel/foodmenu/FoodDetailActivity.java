@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 17/12/20 04:17 PM
+ * Last modified 17/12/20 05:27 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,13 +49,8 @@ public class FoodDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show());
 
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
