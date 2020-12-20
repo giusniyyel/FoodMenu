@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 19/12/20 05:53 PM
+ * Last modified 19/12/20 06:10 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,6 +53,16 @@ public class DummyContent {
     public static void addItem(Food item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
+    }
+
+    public static void updateItem(Food item) {
+        ITEMS.set(ITEMS.indexOf(item), item);
+        ITEM_MAP.put(item.getId(), item);
+    }
+
+    public static void deleteItem(Food item) {
+        ITEMS.remove(item);
+        ITEM_MAP.remove(item);
     }
 
     private static Food createDummyItem(int position) {

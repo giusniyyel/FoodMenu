@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 19/12/20 06:04 PM
+ * Last modified 19/12/20 06:33 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,13 +29,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.giusniyyel.foodmenu.databinding.ActivityFoodListBinding;
+import com.giusniyyel.foodmenu.databinding.FoodListContentBinding;
+import com.giusniyyel.foodmenu.databinding.ItemListBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.giusniyyel.foodmenu.dummy.DummyContent;
 import com.google.firebase.database.ChildEventListener;
@@ -117,22 +121,34 @@ public class FoodListActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                DummyContent.Food food = snapshot.getValue(DummyContent.Food.class);
+                food.setId(snapshot.getKey());
 
+                if (DummyContent.ITEMS.contains(food)) {
+                    DummyContent.updateItem(food);
+                }
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                DummyContent.Food food = snapshot.getValue(DummyContent.Food.class);
+                food.setId(snapshot.getKey());
 
+                if (DummyContent.ITEMS.contains(food)) {
+                    DummyContent.deleteItem(food);
+                }
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Toast.makeText(FoodListActivity.this, "Moved", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(FoodListActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -187,9 +203,9 @@ public class FoodListActivity extends AppCompatActivity {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.food_list_content, parent, false);
-            return new ViewHolder(view);
+            FoodListContentBinding mView = FoodListContentBinding
+                    .inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(mView);
         }
 
         @Override
@@ -199,6 +215,10 @@ public class FoodListActivity extends AppCompatActivity {
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(mOnClickListener);
+
+            holder.btnDelete.setOnClickListener(view -> {
+                DB_REFERENCE.child(mValues.get(position).getId()).removeValue();
+            });
         }
 
         @Override
@@ -209,11 +229,13 @@ public class FoodListActivity extends AppCompatActivity {
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
+            final Button btnDelete;
 
-            ViewHolder(View view) {
-                super(view);
-                mIdView = (TextView) view.findViewById(R.id.id_text);
-                mContentView = (TextView) view.findViewById(R.id.content);
+            ViewHolder(FoodListContentBinding view) {
+                super(view.getRoot());
+                btnDelete = view.btnDelete;
+                mIdView = view.idText;
+                mContentView = view.content;
             }
         }
     }
