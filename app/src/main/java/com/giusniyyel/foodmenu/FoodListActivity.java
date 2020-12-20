@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 19/12/20 05:51 PM
+ * Last modified 19/12/20 06:04 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,6 +45,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * An activity representing a list of Items. This activity
@@ -57,6 +58,7 @@ import java.util.List;
 public class FoodListActivity extends AppCompatActivity {
 
     private static final String PATH_FOOD = "food";
+    private static final DatabaseReference DB_REFERENCE = FirebaseDatabase.getInstance().getReference(PATH_FOOD);
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -100,11 +102,8 @@ public class FoodListActivity extends AppCompatActivity {
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, DummyContent.ITEMS, mTwoPane));
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference(PATH_FOOD);
-
         // To receive the data saved
-        reference.addChildEventListener(new ChildEventListener() {
+        DB_REFERENCE.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 DummyContent.Food food = snapshot.getValue(DummyContent.Food.class);
@@ -144,9 +143,7 @@ public class FoodListActivity extends AppCompatActivity {
             DummyContent.Food food = new DummyContent.Food(mBinding.etName.getText().toString().trim(),
                     mBinding.etPrice.getText().toString().trim());
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference(PATH_FOOD);
-            reference.push().setValue(food);
+            DB_REFERENCE.push().setValue(food);
             mBinding.etName.setText("");
             mBinding.etPrice.setText("");
         });
@@ -197,7 +194,7 @@ public class FoodListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).getId());
+            holder.mIdView.setText(String.format(Locale.getDefault(),"$%s", mValues.get(position).getPrice()));
             holder.mContentView.setText(mValues.get(position).getName());
 
             holder.itemView.setTag(mValues.get(position));

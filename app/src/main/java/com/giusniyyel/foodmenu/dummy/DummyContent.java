@@ -1,6 +1,6 @@
 /*
  * Created by Daniel Campos
- * Last modified 19/12/20 05:50 PM
+ * Last modified 19/12/20 05:53 PM
  * Copyright (C) 2020 GiusNiyyel Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -77,6 +77,7 @@ public class DummyContent {
         private String price;
 
         public Food() {
+            //Firebase needs a simple constructor
         }
 
         public Food(String name, String price) {
